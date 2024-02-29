@@ -1,15 +1,14 @@
 import React, {useEffect} from "react";
 import { useData } from "../context/DataContext";
-import { useUserContext } from "../context/UserContext";
+import { Input } from "antd";
 
 const GetPeople: React.FC = () => {
 
     const {dataState, dataDispatch} = useData()  
-    const {getUser} = useUserContext()
     
     
     useEffect(() => {
-        fetch(`https://randomuser.me/api/?results=5&inc=name,gender,email`)
+        fetch(`https://randomuser.me/api/?results=${dataState.howMany}&inc=name,gender,email`)
         .then((res) => res.json())
         .then((data) => {
             dataDispatch({
@@ -17,11 +16,12 @@ const GetPeople: React.FC = () => {
                 payload: {data: data.results}
             })
         })
-    }, [])
+    }, [dataState.howMany])
 
     return(
         <div style={{padding:'20px'}}> 
             <h1> Data Page!</h1>
+            <Input onChange={(e) => dataDispatch({type: 'updateHowMany', payload:{count: e.target.value}})} value={dataState.howMany} />
             <p>{JSON.stringify(dataState.people)}</p>
         </div>
 

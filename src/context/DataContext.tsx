@@ -20,15 +20,18 @@ type DataType = {
 // this is the state of the current reducer, this can have more than one thing in it
 type DataStateProps = {
     people: DataType[]
+    howMany: number
 }
 
 // this the type of actions of the reducer can do, this can also have more things in it
 type dataActions = 
     | {type: 'fetchData'; payload: {data: DataType[]}}
+    | {type: 'updateHowMany'; payload: {count: number}}
 
 // the initial state of the reducer, contains an empty array of people (matching the DataStateProps)
 const initialState: DataStateProps = {
-    people: []
+    people: [],
+    howMany: 3
 }
 
 // this is where we create our context and reducer.  It takes a State (dataState) and Dispatch function
@@ -50,6 +53,10 @@ const dataReducer = (state: DataStateProps, action: dataActions): DataStateProps
             // when we fetch data, we will return whatever else is in the state (...state) as well as assign the 
             // paylow to the people variable
             return{...state, people: action.payload.data}
+        }
+
+        case 'updateHowMany': {
+            return{...state, howMany: action.payload.count}
         }
 
         default:
